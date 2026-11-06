@@ -1,31 +1,1135 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#102f44" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Vexta" />
-    <meta name="description" content="Dashboard ejecutivo de inversión inmobiliaria Vexta." />
-    <meta property="og:title" content="Vexta Intelligence" />
-    <meta property="og:description" content="Decisiones inmobiliarias con una señal más clara." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="./og.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <title>Vexta Intelligence</title>
-    <script type="module" crossorigin src="./assets/pages-source-0wPKfiOF.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/pages-source-CJckFhrO.css">
-  </head>
-  <body>
-    <div id="root">
-      <main style="min-height:100vh;display:grid;place-items:center;background:#f4f8f8;font-family:Inter,system-ui,sans-serif;color:#173b57">
-        <p>Cargando Vexta Intelligence…</p>
-      </main>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#102f44" />
+<title>Vexta Intelligence · Valor aproximado por dirección</title>
+<meta name="description" content="Escribe una dirección de Lima y conoce su valor aproximado. Simula tu compra o alquiler, gratis." />
+<meta property="og:title" content="Vexta Intelligence" />
+<meta property="og:description" content="¿Cuánto vale, aproximadamente? Escribe la dirección y compruébalo." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="./og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="stylesheet" href="./assets/pages-source-CJckFhrO.css" />
+<style>
+  html, body { overflow-x: clip; }
+  body { min-height: 100vh; }
+
+  /* ---------- Fondo: orbes y cápsulas del logo con parallax ---------- */
+  .vx-fondo { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: radial-gradient(ellipse 80% 55% at 18% 0%, #fff 0%, rgba(255,255,255,0) 70%), radial-gradient(ellipse 70% 60% at 100% 100%, #ffe6c8 0%, rgba(255,230,200,0) 65%), linear-gradient(160deg, #f3f8f7, #e7f1ef); }
+  .vx-orbe { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; animation: vxDeriva 22s ease-in-out infinite alternate; }
+  .vx-orbe.o1 { width: 46vmax; height: 46vmax; left: -14vmax; top: 24%; background: #bdf3e2; }
+  .vx-orbe.o2 { width: 38vmax; height: 38vmax; right: -10vmax; top: -12vmax; background: #bfe6ff; animation-duration: 28s; animation-delay: -6s; }
+  .vx-capa { position: absolute; width: var(--w); transform: translate3d(calc(var(--mx, 0) * var(--prof) * 1px), calc(var(--my, 0) * var(--prof) * 1px), 0); }
+  .vx-capa img { display: block; width: 100%; animation: vxFlota var(--t, 15s) ease-in-out infinite alternate; }
+  @keyframes vxDeriva { to { transform: translate(5vmax, -4vmax) scale(1.12); } }
+  @keyframes vxFlota { from { transform: translateY(-14px) rotate(-2.5deg); } to { transform: translateY(14px) rotate(2.5deg); } }
+
+  /* ---------- Estructura ---------- */
+  .vx-marco { max-width: 1140px; margin: 0 auto; padding: 22px 16px 56px; display: grid; gap: 24px; }
+  .vx-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .vx-marca { display: inline-flex; align-items: center; gap: 10px; color: var(--navy-900); text-decoration: none; }
+  .vx-marca img { width: 38px; height: 38px; object-fit: contain; }
+  .vx-marca b { display: block; letter-spacing: .14em; font-size: .92rem; }
+  .vx-marca small { display: block; letter-spacing: .14em; font-size: .62rem; color: var(--teal-700); font-weight: 700; }
+  .vx-volver { font-size: .84rem; font-weight: 700; color: var(--teal-700); text-decoration: none; white-space: nowrap; }
+  .vx-columnas { display: grid; grid-template-columns: minmax(0, 430px) minmax(0, 1fr); gap: 30px; align-items: start; }
+  .vx-izquierda, .vx-derecha { display: grid; gap: 20px; min-width: 0; }
+
+  /* ---------- Portada: el titular sube línea por línea ---------- */
+  .vx-etiqueta { display: inline-block; background: #fff3dc; color: #8a5a10; font-size: .74rem; font-weight: 800; padding: 6px 11px; border-radius: 999px; }
+  .vx-intro h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; font-size: clamp(2.4rem, 4.7vw, 3.1rem); line-height: 1.05; letter-spacing: -.04em; margin: 12px 0 10px; color: var(--navy-900); }
+  .vx-linea { display: block; white-space: nowrap; animation: vxLinea .95s cubic-bezier(.2,.8,.2,1) both; }
+  .vx-linea + .vx-linea { animation-delay: .16s; }
+  .vx-intro h1 em { display: inline-block; color: var(--teal-500); animation: vxPalabra .9s .34s cubic-bezier(.3,1.5,.5,1) both; transform-origin: 50% 70%; }
+  @keyframes vxLinea { from { opacity: 0; transform: translateY(34px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+  @keyframes vxPalabra { from { transform: scale(.88); } to { transform: scale(1); } }
+  .vx-intro p { margin: 0; color: var(--muted); line-height: 1.5; animation: vxAparece .8s .45s ease both; }
+  .vx-cifras { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 14px; animation: vxAparece .8s .6s ease both; }
+  .vx-cifras span { font-size: .78rem; font-weight: 600; color: var(--muted); }
+  .vx-cifras b { display: block; font-family: Georgia, "Times New Roman", serif; font-size: 1.55rem; font-weight: 500; color: var(--navy-900); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  @keyframes vxAparece { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes vxSube { from { opacity: 0; transform: translateY(26px) scale(.985); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Formulario de cristal claro ---------- */
+  .vx-formulario { display: grid; gap: 15px; padding: clamp(18px, 3vw, 24px); border-radius: 26px; background: rgba(255,255,255,.66); -webkit-backdrop-filter: blur(22px) saturate(160%); backdrop-filter: blur(22px) saturate(160%); border: 1px solid rgba(255,255,255,.9); box-shadow: 0 24px 60px rgba(17,52,70,.13), inset 0 2px 0 #fff; animation: vxSube .8s .5s cubic-bezier(.2,.85,.25,1) both; }
+  .vx-campo { display: grid; gap: 7px; font-size: .86rem; font-weight: 700; color: var(--navy-900); }
+  .vx-campo label, .vx-campo legend { margin: 0; padding: 0; font-weight: 700; }
+  .vx-fila { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  fieldset.vx-campo { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .vx-marco input[type="text"], .vx-marco input[type="number"], .vx-marco select { width: 100%; color: var(--ink); background: rgba(255,255,255,.85); border: 1px solid #d8e3e6; border-radius: 12px; padding: 11px 12px; outline: none; transition: border-color .25s, box-shadow .25s; }
+  .vx-marco input:focus, .vx-marco select:focus { border-color: var(--teal-500); box-shadow: 0 0 0 4px rgba(21,157,147,.16); }
+  /* Selector con pieza blanca que se desliza */
+  .vx-opciones { position: relative; display: grid; grid-template-columns: 1fr 1fr; background: rgba(23,59,87,.08); border-radius: 12px; padding: 4px; gap: 4px; }
+  .vx-opciones::before { content: ""; position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 6px); border-radius: 9px; background: #fff; box-shadow: 0 3px 10px rgba(17,52,70,.16); transition: transform .42s cubic-bezier(.3,1.45,.5,1); }
+  .vx-opciones:has(input:nth-of-type(2):checked)::before { transform: translateX(calc(100% + 4px)); }
+  .vx-opciones input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .vx-opciones label { position: relative; z-index: 1; display: block; text-align: center; padding: 9px 6px; border-radius: 9px; font-size: .84rem; font-weight: 700; color: var(--muted); cursor: pointer; transition: color .25s; }
+  .vx-opciones input:checked + label { color: var(--navy-900); }
+  .vx-opciones input:focus-visible + label { outline: 2px solid var(--teal-500); outline-offset: 1px; }
+  .vx-boton { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(120deg, #0b5be0, var(--teal-500) 60%, var(--mint-500)); color: #fff; border: 0; border-radius: 14px; padding: 15px 18px; font-size: .96rem; font-weight: 800; cursor: pointer; box-shadow: 0 14px 30px rgba(11,91,224,.28); transition: transform .25s cubic-bezier(.3,1.5,.5,1), box-shadow .25s; }
+  .vx-boton::after { content: ""; position: absolute; top: -40%; bottom: -40%; width: 70px; left: -110px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.45), rgba(255,255,255,0)); transform: rotate(18deg); transition: left .75s ease; }
+  .vx-boton:hover { transform: translateY(-2px); box-shadow: 0 18px 36px rgba(11,91,224,.34); }
+  .vx-boton:hover::after { left: 110%; }
+  .vx-boton:active { transform: scale(.98); }
+  .vx-boton:disabled { cursor: wait; }
+  /* Las dos cápsulas del logo se mecen mientras busca */
+  .vx-carga { display: none; position: relative; width: 26px; height: 24px; }
+  .vx-boton.cargando .vx-carga { display: block; }
+  .vx-carga i { position: absolute; width: 18px; height: 8px; border-radius: 99px; background: #fff; }
+  .vx-carga i:first-child { left: 0; top: 4px; transform: rotate(-45deg); animation: vxMece .75s ease-in-out infinite alternate; }
+  .vx-carga i:last-child { right: 0; bottom: 4px; transform: rotate(-45deg); background: #bff7e6; animation: vxMece .75s .18s ease-in-out infinite alternate-reverse; }
+  @keyframes vxMece { from { translate: -2px 2px; } to { translate: 2px -2px; } }
+  .vx-mensaje { margin: 0; padding: 12px 14px; border-radius: 12px; font-size: .86rem; line-height: 1.45; animation: vxAparece .4s ease both; }
+  .vx-mensaje.aviso { background: #fff3dc; color: #7a4f0d; }
+  .vx-mensaje.error { background: #fbe4e4; color: #8a3535; }
+
+  /* ---------- Mapa vivo ---------- */
+  .vx-escenario { position: relative; height: clamp(310px, 42vw, 490px); border-radius: 28px; overflow: hidden; background: rgba(255,255,255,.56); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.92); box-shadow: 0 26px 70px rgba(17,52,70,.13), inset 0 2px 0 #fff; animation: vxSube .9s .3s cubic-bezier(.2,.85,.25,1) both; }
+  .vx-escenario canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .vx-rotulo-mapa { position: absolute; left: 14px; top: 14px; max-width: calc(100% - 28px); display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; background: rgba(255,255,255,.84); box-shadow: 0 6px 16px rgba(17,52,70,.1); font-size: .76rem; font-weight: 800; color: var(--navy-800); pointer-events: none; }
+  .vx-rotulo-mapa span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .vx-rotulo-mapa i { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--mint-500); animation: vxLatido 3.4s ease-out infinite; }
+  @keyframes vxLatido { 0% { box-shadow: 0 0 0 0 rgba(49,211,155,.55); } 100% { box-shadow: 0 0 0 10px rgba(49,211,155,0); } }
+  .vx-leyenda { position: absolute; left: 14px; top: 52px; display: flex; gap: 10px; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.8); font-size: .67rem; font-weight: 700; color: var(--navy-800); pointer-events: none; animation: vxAparece .5s ease both; }
+  .vx-leyenda span { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .vx-punto-color { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+  .c-barato { background: #17d9ae; } .c-parecido { background: #1e8bff; } .c-caro { background: #ff8a4c; }
+  .vx-globo { position: absolute; transform: translate(-50%, calc(-100% - 14px)); padding: 7px 11px; border-radius: 10px; background: var(--navy-900); color: #fff; font-size: .74rem; font-weight: 700; white-space: nowrap; pointer-events: none; box-shadow: 0 10px 22px rgba(8,29,43,.3); z-index: 3; }
+
+  /* ---------- Resultado: tarjeta de cristal sobre el mapa ---------- */
+  #resultado { position: relative; z-index: 2; margin-top: -104px; padding: 0 clamp(8px, 2.2vw, 22px); display: grid; gap: 18px; }
+  .vx-escena-vidrio { position: relative; }
+  .vx-cap { position: absolute; pointer-events: none; }
+  .vx-cap img { display: block; width: 100%; animation: vxFlota var(--t, 11s) ease-in-out infinite alternate; }
+  .vx-cap.atras { --w: clamp(240px, 30vw, 340px); z-index: 0; width: var(--w); animation: vxEntraCap 1.1s cubic-bezier(.25,1.2,.4,1) both; }
+  .vx-cap.a1 { right: calc(var(--w) * -.5); top: calc(var(--w) * -.62); }
+  .vx-cap.a2 { left: calc(var(--w) * -.58); bottom: 4%; --t: 13s; animation-delay: .08s; }
+  .vx-cap.delante { z-index: 2; width: clamp(92px, 11vw, 130px); animation: vxPop .75s .55s cubic-bezier(.3,1.6,.5,1) both; }
+  .vx-cap.d1 { right: -38px; top: -58px; --t: 7s; }
+  .vx-cap.d2 { left: -34px; bottom: -78px; --t: 9s; animation-delay: .68s; }
+  @keyframes vxEntraCap { from { opacity: 0; transform: translateY(70px) scale(.8); } to { opacity: 1; transform: none; } }
+  @keyframes vxPop { from { transform: scale(0); } to { transform: scale(1); } }
+  .vx-vidrio { position: relative; z-index: 1; overflow: hidden; display: grid; gap: 13px; padding: clamp(20px, 3.2vw, 30px); border-radius: 30px; color: #fff; background: linear-gradient(150deg, rgba(9,120,230,.86) 0%, rgba(0,150,170,.84) 55%, rgba(6,169,130,.84) 100%); -webkit-backdrop-filter: blur(26px) saturate(170%); backdrop-filter: blur(26px) saturate(170%); border: 2px solid rgba(255,255,255,.6); box-shadow: 0 34px 80px rgba(0,120,140,.32), inset 0 3px 0 rgba(255,255,255,.85), inset 0 -3px 0 rgba(255,255,255,.28); animation: vxCristal .95s cubic-bezier(.2,1.2,.3,1) both; }
+  .vx-vidrio::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(155deg, rgba(255,255,255,.3) 0%, rgba(255,255,255,.06) 32%, rgba(255,255,255,0) 58%, rgba(255,255,255,.08) 100%); }
+  .vx-vidrio::after { content: ""; position: absolute; top: -40%; bottom: -40%; left: -30%; width: 22%; pointer-events: none; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.34), rgba(255,255,255,0)); transform: rotate(16deg); animation: vxBarrido 1.5s .35s ease-out both, vxBarridoLento 14s 6s ease-in-out infinite; }
+  .vx-vidrio > * { position: relative; z-index: 1; }
+  @keyframes vxCristal { from { opacity: 0; transform: translateY(70px) scale(.94); } to { opacity: 1; transform: none; } }
+  @keyframes vxBarrido { from { left: -30%; } 45%, to { left: 125%; } }
+  @keyframes vxBarridoLento { from { left: -30%; } 12%, to { left: 125%; } }
+  .vx-aparece { animation: vxAparece .6s ease both; animation-delay: calc(var(--d, 0) * 1ms); }
+  .vx-rotulo { font-size: .74rem; letter-spacing: .13em; text-transform: uppercase; font-weight: 800; }
+  .vx-valor { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.7rem, 9.5vw, 4.1rem); font-weight: 500; letter-spacing: -.03em; line-height: 1; overflow-wrap: anywhere; font-variant-numeric: lining-nums; }
+  .vx-valor small { font-family: Inter, sans-serif; font-size: 1rem; letter-spacing: 0; font-weight: 600; opacity: .9; }
+  .vx-dolares { font-size: .92rem; font-weight: 700; opacity: .92; }
+  /* Medidor: la cápsula del logo cae sobre el rango */
+  .vx-medidor { position: relative; height: 42px; margin-top: 2px; }
+  .vx-pista { position: absolute; left: 0; right: 0; top: 50%; height: 14px; margin-top: -7px; border-radius: 999px; background: rgba(255,255,255,.22); box-shadow: inset 0 2px 5px rgba(0,50,60,.24); overflow: hidden; }
+  .vx-relleno { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(255,255,255,.28), #fff 50%, rgba(255,255,255,.28)); transform: scaleX(0); transition: transform 1s cubic-bezier(.2,.8,.2,1); }
+  .vx-medidor.listo .vx-relleno { transform: scaleX(1); }
+  .vx-marcador { position: absolute; top: 50%; left: 0; width: 60px; height: 26px; margin: -13px 0 0 -30px; border-radius: 999px; background: linear-gradient(180deg, #17d9ae 0%, #17d9ae 45%, #8df9de 100%); border: 2px solid #fff; box-shadow: 0 10px 22px rgba(0,50,60,.36), inset 0 2px 0 rgba(255,255,255,.75); transform: rotate(-38deg); transition: left 1.15s cubic-bezier(.3,1.4,.5,1); }
+  .vx-extremos { display: flex; justify-content: space-between; gap: 12px; font-size: .9rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .vx-datos { display: flex; flex-wrap: wrap; gap: 8px; }
+  .vx-datos span { background: rgba(255,255,255,.17); border: 1px solid rgba(255,255,255,.3); border-radius: 999px; padding: 7px 12px; font-size: .78rem; font-weight: 700; animation: vxPop .55s cubic-bezier(.3,1.6,.5,1) both; animation-delay: calc(var(--d, 0) * 1ms); }
+  .vx-datos span.alta { background: #fff; color: #087255; border-color: #fff; }
+  .vx-datos span.media { background: #fff; color: #8a5a10; border-color: #fff; }
+  .vx-datos span.baja { background: #fff; color: #9b3e3e; border-color: #fff; }
+  .vx-nota { margin: 0; font-size: .85rem; line-height: 1.5; }
+  .vx-vidrio .vx-nota { color: rgba(255,255,255,.93); }
+  .vx-aviso-vidrio { margin: 0; padding: 11px 13px; border-radius: 12px; background: rgba(255,255,255,.95); color: #7a4f0d; font-size: .85rem; line-height: 1.45; }
+
+  /* ---------- Avisos cercanos ---------- */
+  .vx-panel { display: grid; gap: 12px; padding: clamp(16px, 3vw, 22px); border-radius: 26px; background: rgba(255,255,255,.74); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.92); box-shadow: 0 20px 50px rgba(17,52,70,.1), inset 0 2px 0 #fff; animation: vxSube .8s cubic-bezier(.2,.85,.25,1) both; animation-delay: calc(var(--d, 0) * 1ms); }
+  .vx-panel .vx-rotulo { color: var(--teal-700); }
+  .vx-panel .vx-nota { color: var(--muted); }
+  .vx-cercanos { display: grid; gap: 9px; list-style: none; margin: 0; padding: 0; }
+  .vx-cercanos li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 3px 11px; align-items: center; padding: 11px 13px; background: #fff; border: 1px solid var(--line); border-radius: 14px; transition: transform .28s cubic-bezier(.3,1.5,.5,1), border-color .25s, box-shadow .25s; animation: vxSube .6s cubic-bezier(.2,.85,.25,1) both; animation-delay: calc(var(--d, 0) * 1ms); }
+  .vx-cercanos li:hover, .vx-cercanos li:focus-within { transform: translateY(-2px); border-color: var(--teal-500); box-shadow: 0 10px 22px rgba(17,52,70,.1); }
+  .vx-cercanos .vx-punto-color { grid-row: 1 / span 2; width: 11px; height: 11px; }
+  .vx-cercanos b { font-size: .97rem; color: var(--navy-900); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+  .vx-cercanos small { grid-column: 2; font-size: .77rem; color: var(--muted); }
+  .vx-cercanos a { grid-column: 3; grid-row: 1 / span 2; font-size: .8rem; font-weight: 800; color: var(--teal-700); white-space: nowrap; text-align: right; text-decoration: none; }
+  .vx-cercanos a .vx-ver { text-decoration: underline; }
+  .vx-resumen { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .86rem; font-weight: 700; color: var(--navy-800); }
+  .vx-resumen span { display: inline-flex; align-items: center; gap: 7px; }
+  a.vx-boton { text-decoration: none; }
+  .vx-relativo { display: block; font-size: .7rem; font-weight: 800; }
+  .vx-relativo.barato { color: #067f60; } .vx-relativo.parecido { color: #0b5be0; } .vx-relativo.caro { color: #c4551c; }
+  /* ---------- Sector para simular gratis ---------- */
+  #banda-movil { display: none; }
+  .vx-simula { position: relative; overflow: hidden; display: grid; gap: 10px; padding: clamp(18px, 3vw, 24px); border-radius: 26px; background: linear-gradient(140deg, rgba(255,255,255,.84), rgba(219,248,238,.74)); -webkit-backdrop-filter: blur(20px) saturate(160%); backdrop-filter: blur(20px) saturate(160%); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 22px 56px rgba(17,52,70,.12), inset 0 2px 0 #fff; animation: vxSube .8s .65s cubic-bezier(.2,.85,.25,1) both; }
+  .vx-simula h2 { position: relative; margin: 0; max-width: 84%; font-family: Georgia, "Times New Roman", serif; font-weight: 500; font-size: clamp(1.5rem, 3vw, 1.95rem); line-height: 1.1; letter-spacing: -.03em; color: var(--navy-900); }
+  .vx-simula h2 em { color: var(--teal-500); }
+  .vx-simula p { position: relative; margin: 0; max-width: 84%; font-size: .88rem; line-height: 1.45; color: var(--muted); }
+  .vx-simula-botones { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+  .vx-simula-botones .vx-boton { padding: 13px 10px; font-size: .9rem; }
+  .vx-boton.vx-boton-claro { background: #fff; color: var(--navy-900); box-shadow: inset 0 0 0 1.5px var(--teal-500), 0 10px 22px rgba(17,52,70,.08); }
+  .vx-cap-simula { position: absolute; right: -44px; top: -56px; width: 160px; pointer-events: none; }
+  .vx-cap-simula img { display: block; width: 100%; animation: vxFlota 13s ease-in-out infinite alternate; }
+  .vx-pie { font-size: .76rem; line-height: 1.5; color: var(--muted); text-align: center; margin: 0; }
+  .vx-pie a { color: inherit; }
+  .vx-solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  [hidden] { display: none !important; }
+
+  @media (min-width: 920px) and (min-height: 820px) { .vx-izquierda { position: sticky; top: 16px; } }
+  @media (max-width: 919px) {
+    #banda-movil { display: block; }
+    #banda-escritorio { display: none; }
+    .vx-columnas { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .vx-escenario { height: clamp(320px, 88vw, 460px); }
+    .vx-capa { opacity: .8; }
+  }
+  @media (max-width: 480px) { .vx-fila { gap: 10px; } .vx-volver { font-size: .78rem; } .vx-leyenda { gap: 7px; font-size: .62rem; } .vx-largo { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .vx-vidrio::after { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="fondo" class="vx-fondo" aria-hidden="true">
+  <span class="vx-orbe o1"></span>
+  <span class="vx-orbe o2"></span>
+  <span class="vx-capa" style="--prof:.22;--w:clamp(300px,34vw,520px);left:-11%;top:44%;--t:19s"><img src="./assets/vexta-capsula-azul.svg" alt="" /></span>
+  <span class="vx-capa" style="--prof:.55;--w:clamp(240px,24vw,380px);right:-8%;top:-6%;--t:16s"><img src="./assets/vexta-capsula-verde.svg" alt="" /></span>
+  <span class="vx-capa" style="--prof:1;--w:clamp(110px,11vw,170px);left:41%;top:4%;--t:11s"><img src="./assets/vexta-capsula-azul.svg" alt="" /></span>
+</div>
+
+<main class="vx-marco">
+  <header class="vx-cabecera">
+    <a class="vx-marca" href="./index.html">
+      <img src="./icon-192.png" alt="" />
+      <span><b>VEXTA</b><small>INTELLIGENCE</small></span>
+    </a>
+    <a id="volver" class="vx-volver" href="./index.html">← Volver a la app</a>
+  </header>
+
+  <div class="vx-columnas">
+    <div class="vx-izquierda">
+      <section class="vx-intro">
+        <h1><span class="vx-linea">¿Cuánto vale,</span><span class="vx-linea"><em>aproximadamente</em>?</span></h1>
+        <p>Escribe la dirección y compárala con avisos publicados en Lima.</p>
+        <div class="vx-cifras">
+          <span><b id="cifra-avisos">0</b>avisos en el mapa</span>
+          <span><b id="cifra-distritos">0</b>distritos</span>
+          <span><b id="cifra-mercados">0</b>mercados</span>
+        </div>
+      </section>
+
+      <form id="formulario" class="vx-formulario" novalidate>
+        <div class="vx-campo">
+          <label for="direccion">Dirección</label>
+          <input id="direccion" type="text" autocomplete="off" placeholder="Ej.: Av. José Pardo 1100, Miraflores" />
+        </div>
+        <div class="vx-campo">
+          <label for="distrito">Distrito</label>
+          <select id="distrito"><option value="">Detectar por la dirección</option></select>
+        </div>
+        <div class="vx-fila">
+          <fieldset class="vx-campo">
+            <legend>Operación</legend>
+            <div class="vx-opciones">
+              <input type="radio" name="operacion" id="op-venta" value="venta" checked /><label for="op-venta">Venta</label>
+              <input type="radio" name="operacion" id="op-alquiler" value="alquiler" /><label for="op-alquiler">Alquiler</label>
+            </div>
+          </fieldset>
+          <fieldset class="vx-campo">
+            <legend>Tipo</legend>
+            <div class="vx-opciones">
+              <input type="radio" name="tipo" id="ti-dep" value="departamento" checked /><label for="ti-dep">Dpto.</label>
+              <input type="radio" name="tipo" id="ti-casa" value="casa" /><label for="ti-casa">Casa</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="vx-fila">
+          <div class="vx-campo">
+            <label for="area">Área total (m²)</label>
+            <input id="area" type="number" min="10" max="1000" step="1" inputmode="numeric" value="80" />
+          </div>
+          <div class="vx-campo">
+            <label for="dormitorios">Dormitorios</label>
+            <input id="dormitorios" type="number" min="1" max="10" step="1" inputmode="numeric" value="2" />
+          </div>
+        </div>
+        <button id="calcular" class="vx-boton" type="submit"><span class="vx-carga" aria-hidden="true"><i></i><i></i></span><span id="texto-boton">Calcular valor aproximado</span></button>
+        <p id="mensaje" class="vx-mensaje" role="status" hidden></p>
+      </form>
+      <div id="banda-movil"></div>
     </div>
-  </body>
+
+    <div class="vx-derecha">
+      <section id="escenario" class="vx-escenario">
+        <canvas id="mapa" role="img" aria-label="Mapa con los avisos de Lima usados por el modelo"></canvas>
+        <div class="vx-rotulo-mapa"><i></i><span id="rotulo-mapa">Cada punto es un aviso real</span></div>
+        <div id="leyenda" class="vx-leyenda" hidden>
+          <span><i class="vx-punto-color c-barato"></i>Más barato</span>
+          <span><i class="vx-punto-color c-parecido"></i>Parecido</span>
+          <span><i class="vx-punto-color c-caro"></i>Más caro</span>
+        </div>
+        <div id="globo" class="vx-globo" hidden></div>
+      </section>
+      <section id="resultado" hidden></section>
+      <div id="banda-escritorio"></div>
+      <div id="anuncio" class="vx-solo-lector" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <p class="vx-pie">
+    Valor aproximado calculado con avisos publicados, no con ventas cerradas. No es una tasación y no reemplaza la revisión de un perito, de los documentos ni del estado del inmueble.
+    <br />Tu dirección se consulta en OpenStreetMap y Vexta no la guarda. Datos de ubicación © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a>.
+  </p>
+</main>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const plano = (t) => (t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+  const soles = new Intl.NumberFormat("es-PE", { style: "currency", currency: "PEN", maximumFractionDigits: 0 });
+  const dolares = new Intl.NumberFormat("es-PE", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+  const entero = new Intl.NumberFormat("es-PE", { maximumFractionDigits: 0 });
+  const calma = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const TAU = Math.PI * 2;
+  // Cuadro de Lima metropolitana para el buscador: oeste, norte, este, sur
+  const CUADRO_LIMA = "-77.20,-11.90,-76.80,-12.30";
+  const COLORES = { barato: "#17d9ae", parecido: "#1e8bff", caro: "#ff8a4c", neutro: "#14777c" };
+  // Un aviso es «parecido» si está a ±10 % de lo esperado para su tamaño, dormitorios y zona.
+  const MARGEN_PARECIDO = 0.1;
+  let DATOS = null;
+  let Mapa = null;
+  let turno = 0;
+  const memoria = new Map();
+  let ultimaConsulta = 0;
+
+  // ---------- Ayudas de movimiento ----------
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
+  const mezcla = (a, b, t) => a + (b - a) * t;
+  const suave = (t) => t * t * t * (t * (6 * t - 15) + 10);
+  const salida = (t) => 1 - Math.pow(1 - t, 3);
+  // Muelle con un pequeño rebote; t en milisegundos
+  const muelle = (t) => {
+    if (t <= 0) return 0;
+    const w = 0.017;
+    const z = 0.55;
+    return 1 - Math.exp(-z * w * t) * Math.cos(w * Math.sqrt(1 - z * z) * t);
+  };
+
+  const contar = (nodo, desde, hasta, ms, formato) => {
+    if (calma) {
+      nodo.textContent = formato(hasta);
+      return;
+    }
+    nodo.textContent = formato(desde);
+    const inicio = performance.now();
+    const paso = (ahora) => {
+      if (!nodo.isConnected) return;
+      const k = clamp01((ahora - inicio) / ms);
+      nodo.textContent = formato(mezcla(desde, hasta, 1 - Math.pow(1 - k, 4)));
+      if (k < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  };
+
+  // ---------- Mapa vivo: cada punto es un aviso, en su ubicación real ----------
+  const crearMapa = (lienzo, datos) => {
+    const ctx = lienzo.getContext("2d");
+    const escenario = lienzo.parentElement;
+    const mediana = (v) => [...v].sort((a, b) => a - b)[Math.floor(v.length / 2)];
+    const lat0 = mediana(datos.avisos.map((a) => a[2]));
+    const lon0 = mediana(datos.avisos.map((a) => a[3]));
+    const aPlano = (lat, lon) => ({ x: (lon - lon0) * 108.2, y: -(lat - lat0) * 110.6 });
+    const puntos = datos.avisos.map((a) => ({ ...aPlano(a[2], a[3]), op: a[0], ti: a[1] }));
+    const orden = (clave) => puntos.map((p) => p[clave]).sort((a, b) => a - b);
+    const xs = orden("x");
+    const ys = orden("y");
+    const corte = (v, p) => v[Math.floor((v.length - 1) * p)];
+    const caja = { x0: corte(xs, 0.005), x1: corte(xs, 0.995), y0: corte(ys, 0.005), y1: corte(ys, 0.995) };
+
+    const porDistrito = {};
+    datos.avisos.forEach((a) => (porDistrito[a[8]] = porDistrito[a[8]] || []).push(a));
+    const nombres = Object.entries(porDistrito)
+      .map(([nombre, lista]) => ({ nombre, n: lista.length, ...aPlano(mediana(lista.map((a) => a[2])), mediana(lista.map((a) => a[3]))) }))
+      .sort((a, b) => b.n - a.n);
+    const centro = (nombre) => {
+      const lista = porDistrito[nombre] || [];
+      return { lat: mediana(lista.map((a) => a[2])), lon: mediana(lista.map((a) => a[3])) };
+    };
+
+    let W = 0;
+    let H = 0;
+    let dpr = 1;
+    let general = { x: 0, y: 0, e: 1, cy: 0.5 };
+    let vista = general;
+    let viaje = null;
+    let foco = null;
+    let buscando = false;
+    let filtro = null;
+    let resaltado = null;
+    let visible = true;
+    let cuadros = 0;
+    let nombresVisibles = [];
+    const logo = {};
+    // En la versión para clientes los avisos no llevan precio ni enlace
+    const interactivo = datos.modo !== "cliente";
+
+    const vistaDe = (f) => ({ x: f.x, y: f.y, e: (Math.min(W, H * 0.68) * 0.44) / f.radio, cy: 0.4 });
+
+    const acomodarNombres = () => {
+      // Los nombres que chocarían con otro más importante no se dibujan
+      ctx.font = "700 11px Inter, system-ui, sans-serif";
+      const puestos = [];
+      nombresVisibles = nombres.filter((d) => {
+        const sx = (d.x - general.x) * general.e + W / 2;
+        const sy = (d.y - general.y) * general.e + H * general.cy;
+        const w = ctx.measureText(d.nombre).width + 8;
+        const c = { x0: sx - w / 2, x1: sx + w / 2, y0: sy - 9, y1: sy + 9 };
+        if (c.x0 < 4 || c.x1 > W - 4 || puestos.some((o) => c.x0 < o.x1 && c.x1 > o.x0 && c.y0 < o.y1 && c.y1 > o.y0)) return false;
+        puestos.push(c);
+        return true;
+      });
+    };
+
+    const medir = () => {
+      const c = escenario.getBoundingClientRect();
+      if (!c.width) return;
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = c.width;
+      H = c.height;
+      lienzo.width = Math.round(W * dpr);
+      lienzo.height = Math.round(H * dpr);
+      const m = Math.min(W, H) * 0.09;
+      const e = Math.min((W - 2 * m) / (caja.x1 - caja.x0), (H - 2 * m) / (caja.y1 - caja.y0));
+      general = { x: (caja.x0 + caja.x1) / 2, y: (caja.y0 + caja.y1) / 2, e, cy: 0.5 };
+      if (!viaje) vista = foco ? vistaDe(foco) : general;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      acomodarNombres();
+      pedirCuadro();
+    };
+
+    const aPantalla = (p, v) => [(p.x - v.x) * v.e + W / 2, (p.y - v.y) * v.e + H * v.cy];
+
+    const camara = (ahora) => {
+      if (!viaje) return vista;
+      const k = suave(clamp01((ahora - viaje.t0) / viaje.dur));
+      const { desde: a, hacia: b } = viaje;
+      vista = { x: mezcla(a.x, b.x, k), y: mezcla(a.y, b.y, k), e: Math.exp(mezcla(Math.log(a.e), Math.log(b.e), k)), cy: mezcla(a.cy, b.cy, k) };
+      if (k >= 1) viaje = null;
+      return vista;
+    };
+
+    const dibujarFoco = (ahora, v) => {
+      const [cx, cy] = aPantalla(foco, v);
+      const k = clamp01((ahora - foco.t0) / 600);
+      if (foco.exacto && k > 0) {
+        ctx.setLineDash([4, 6]);
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = "#14777c";
+        [foco.radio, foco.radio / 2].forEach((radio, i) => {
+          const r = radio * v.e * (0.72 + 0.28 * salida(k));
+          ctx.globalAlpha = (i ? 0.32 : 0.55) * k;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, TAU);
+          ctx.stroke();
+          ctx.setLineDash(i ? [] : [4, 6]);
+          const etiqueta = radio >= 1 ? `${radio} km` : `${Math.round(radio * 1000)} m`;
+          ctx.font = "700 10px Inter, system-ui, sans-serif";
+          ctx.textAlign = "left";
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = "rgba(255,255,255,.9)";
+          ctx.fillStyle = "#14777c";
+          ctx.globalAlpha = 0.9 * k;
+          const lx = cx + r * 0.72;
+          const ly = cy - r * 0.72;
+          ctx.setLineDash([]);
+          ctx.strokeText(etiqueta, lx + 3, ly);
+          ctx.fillText(etiqueta, lx + 3, ly);
+          ctx.setLineDash([4, 6]);
+          ctx.lineWidth = 1.2;
+          ctx.strokeStyle = "#14777c";
+        });
+        ctx.setLineDash([]);
+      }
+      foco.marcas.forEach((m) => {
+        const s = calma ? 1 : muelle(ahora - foco.t0 - m.retraso);
+        if (s <= 0) return;
+        const [mx, my] = aPantalla(m, v);
+        const activo = resaltado === m.url;
+        const r = (activo ? 9.5 : 6) * s;
+        ctx.globalAlpha = Math.min(1, s) * (activo ? 0.34 : 0.2);
+        ctx.fillStyle = m.color;
+        ctx.beginPath();
+        ctx.arc(mx, my, r * 2.1, 0, TAU);
+        ctx.fill();
+        ctx.globalAlpha = Math.min(1, s);
+        ctx.beginPath();
+        ctx.arc(mx, my, r, 0, TAU);
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#fff";
+        ctx.stroke();
+      });
+      if (foco.exacto && logo.azul && logo.verde) {
+        // El logo es el alfiler: sus dos cápsulas caen y se encajan.
+        const s = calma ? 1 : muelle(ahora - foco.t0 + 120);
+        if (s > 0) {
+          const t = 92;
+          const dx = (1 - s) * 34;
+          ctx.globalAlpha = Math.min(1, s);
+          ctx.drawImage(logo.azul, cx - t / 2 - dx, cy - t / 2 - dx, t, t);
+          ctx.drawImage(logo.verde, cx - t / 2 + dx, cy - t / 2 + dx, t, t);
+        }
+      }
+      ctx.globalAlpha = 1;
+    };
+
+    const pintarCuadro = (ahora) => {
+      const v = camara(ahora);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      const zoom = v.e / general.e;
+
+      // Pulso lento y suave: los puntos respiran sin distraer
+      let ox = W / 2;
+      let oy = H * v.cy;
+      let periodo = 12000;
+      let anchoOnda = 120;
+      let maxOnda = Math.hypot(W, H) * 0.62;
+      let fuerza = 0.2;
+      if (buscando) {
+        periodo = 3000;
+        anchoOnda = 100;
+        fuerza = 0.34;
+      } else if (foco && !viaje) {
+        [ox, oy] = aPantalla(foco, v);
+        periodo = 10000;
+        anchoOnda = 70;
+        maxOnda = foco.radio * v.e * 1.25;
+        fuerza = 0.16;
+      }
+      const onda = calma ? -1000 : ((ahora % periodo) / periodo) * maxOnda;
+
+      const tam = Math.min(3.1, 1.45 + Math.log2(zoom) * 0.27);
+      for (const p of puntos) {
+        const sx = (p.x - v.x) * v.e + W / 2;
+        const sy = (p.y - v.y) * v.e + H * v.cy;
+        if (sx < -6 || sx > W + 6 || sy < -6 || sy > H + 6) continue;
+        const coincide = !filtro || (p.op === filtro.op && p.ti === filtro.ti);
+        let a = coincide ? 0.46 : 0.13;
+        let t = coincide ? tam : tam * 0.8;
+        const w = Math.abs(Math.hypot(sx - ox, sy - oy) - onda);
+        if (w < anchoOnda) {
+          const b = suave(1 - w / anchoOnda);
+          a = Math.min(1, a + b * fuerza);
+          t += b * 0.3;
+        }
+        ctx.globalAlpha = a;
+        ctx.fillStyle = coincide ? "#14777c" : "#7f9aa3";
+        ctx.beginPath();
+        ctx.arc(sx, sy, t, 0, TAU);
+        ctx.fill();
+      }
+
+      // Nombres de los distritos: se apagan al acercarse
+      const aNombres = clamp01(1.5 - zoom * 0.5);
+      if (aNombres > 0) {
+        ctx.font = "700 11px Inter, system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.lineWidth = 3.5;
+        ctx.strokeStyle = "rgba(255,255,255,.92)";
+        ctx.fillStyle = "#173b57";
+        ctx.globalAlpha = aNombres;
+        nombresVisibles.forEach((d) => {
+          const [sx, sy] = aPantalla(d, v);
+          ctx.strokeText(d.nombre, sx, sy + 4);
+          ctx.fillText(d.nombre, sx, sy + 4);
+        });
+      }
+      if (foco) dibujarFoco(ahora, v);
+      ctx.globalAlpha = 1;
+    };
+
+    let pendiente = false;
+    function pedirCuadro() {
+      if (pendiente) return;
+      pendiente = true;
+      requestAnimationFrame(cuadro);
+    }
+    function cuadro(ahora) {
+      pendiente = false;
+      cuadros += 1;
+      // En pantallas chicas basta con la mitad de los cuadros
+      if (visible && W && (W >= 520 || cuadros % 2 === 0 || calma)) pintarCuadro(ahora);
+      if (!calma) pedirCuadro();
+    }
+
+    const marcaEn = (x, y) => {
+      if (!foco || !interactivo) return null;
+      let mejor = null;
+      let distancia = 15;
+      foco.marcas.forEach((m) => {
+        const [mx, my] = aPantalla(m, vista);
+        const d = Math.hypot(mx - x, my - y);
+        if (d < distancia) {
+          distancia = d;
+          mejor = { m, mx, my };
+        }
+      });
+      return mejor;
+    };
+    lienzo.addEventListener("pointermove", (ev) => {
+      const c = lienzo.getBoundingClientRect();
+      const hallada = marcaEn(ev.clientX - c.left, ev.clientY - c.top);
+      const globo = $("globo");
+      lienzo.style.cursor = hallada ? "pointer" : "";
+      resaltado = hallada ? hallada.m.url : null;
+      globo.hidden = !hallada;
+      if (hallada) {
+        globo.textContent = `${soles.format(hallada.m.precio)} · ${hallada.m.area} m² · ${hallada.m.dormitorios} dorm.`;
+        globo.style.left = `${Math.min(W - 90, Math.max(90, hallada.mx))}px`;
+        globo.style.top = `${hallada.my}px`;
+      }
+      if (calma) pedirCuadro();
+    });
+    lienzo.addEventListener("pointerleave", () => {
+      $("globo").hidden = true;
+      resaltado = null;
+      if (calma) pedirCuadro();
+    });
+    lienzo.addEventListener("click", (ev) => {
+      const c = lienzo.getBoundingClientRect();
+      const hallada = marcaEn(ev.clientX - c.left, ev.clientY - c.top);
+      if (hallada) window.open(hallada.m.url, "_blank", "noopener,noreferrer");
+    });
+
+    const prerender = (src, clave) => {
+      const imagen = new Image();
+      imagen.onload = () => {
+        const hoja = document.createElement("canvas");
+        hoja.width = hoja.height = 240;
+        hoja.getContext("2d").drawImage(imagen, 0, 0, 240, 240);
+        logo[clave] = hoja;
+      };
+      imagen.src = src;
+    };
+    prerender("./assets/vexta-capsula-azul.svg", "azul");
+    prerender("./assets/vexta-capsula-verde.svg", "verde");
+
+    new ResizeObserver(medir).observe(escenario);
+    new IntersectionObserver((e) => (visible = e[0].isIntersecting)).observe(escenario);
+    medir();
+    pedirCuadro();
+
+    return {
+      centro,
+      buscar: (activo) => {
+        buscando = activo;
+        pedirCuadro();
+      },
+      filtrar: (op, ti) => {
+        filtro = { op, ti };
+        pedirCuadro();
+      },
+      resaltar: (url) => {
+        resaltado = url;
+        pedirCuadro();
+      },
+      enfocar: ({ lat, lon, radio, exacto, marcas }) => {
+        const ahora = performance.now();
+        const destino = { ...aPlano(lat, lon), radio, exacto };
+        const llegada = calma ? 0 : 1250;
+        const ordenadas = marcas
+          .map((m) => ({ ...m, ...aPlano(m.lat, m.lon) }))
+          .sort((a, b) => Math.hypot(a.x - destino.x, a.y - destino.y) - Math.hypot(b.x - destino.x, b.y - destino.y));
+        ordenadas.forEach((m, i) => (m.retraso = Math.min(950, 120 + i * 42)));
+        foco = { ...destino, t0: ahora + llegada, marcas: ordenadas };
+        const hacia = vistaDe(foco);
+        if (calma) {
+          vista = hacia;
+          foco.t0 = ahora - 5000;
+        } else {
+          viaje = { desde: { ...vista }, hacia, t0: ahora, dur: llegada };
+        }
+        pedirCuadro();
+      },
+    };
+  };
+
+  // ---------- Dirección ----------
+  const mostrarMensaje = (texto, clase) => {
+    const caja = $("mensaje");
+    caja.hidden = !texto;
+    caja.textContent = texto || "";
+    caja.className = `vx-mensaje ${clase || "aviso"}`;
+  };
+
+  const redondear = (valor, operacion) => {
+    const paso = operacion === "venta" ? 1000 : 50;
+    return Math.round(valor / paso) * paso;
+  };
+
+  const km = (a, b) => Math.hypot((a[0] - b[0]) * 110.6, (a[1] - b[1]) * 108.2);
+
+  // "San Juan de Miraflores" contiene "Miraflores": se revisan primero los nombres más largos.
+  const distritoEnTexto = (texto) => {
+    const limpio = plano(texto);
+    const nombres = [];
+    DATOS.distritos.forEach((d) => [d.nombre, ...d.alias].forEach((n) => nombres.push([plano(n), d.nombre])));
+    nombres.sort((a, b) => b[0].length - a[0].length);
+    const hallado = nombres.find(([n]) => new RegExp(`(^|[^a-z])${n}([^a-z]|$)`).test(limpio));
+    return hallado ? hallado[1] : null;
+  };
+
+  // OpenStreetMap escribe los nombres completos
+  const expandir = (texto) =>
+    texto
+      .replace(/\bav\.?(?=\s)/gi, "Avenida")
+      .replace(/\bjr\.?(?=\s)/gi, "Jirón")
+      .replace(/\b(ca|cl|calle)\.?(?=\s)/gi, "Calle")
+      .replace(/\b(psje|pje)\.?(?=\s)/gi, "Pasaje")
+      .replace(/\bmz\.?(?=\s)/gi, "Manzana");
+
+  const consultar = async (consulta) => {
+    if (memoria.has(consulta)) return memoria.get(consulta);
+    // Regla del servicio: como máximo una consulta por segundo
+    const espera = 1100 - (Date.now() - ultimaConsulta);
+    if (espera > 0) await new Promise((r) => setTimeout(r, espera));
+    ultimaConsulta = Date.now();
+    const parametros = new URLSearchParams({ q: consulta, format: "jsonv2", limit: "1", countrycodes: "pe", addressdetails: "1", viewbox: CUADRO_LIMA, bounded: "1" });
+    const respuesta = await fetch(`https://nominatim.openstreetmap.org/search?${parametros}`, { headers: { Accept: "application/json" } });
+    if (!respuesta.ok) throw new Error(`estado ${respuesta.status}`);
+    const lista = await respuesta.json();
+    const hallado = lista[0] || null;
+    memoria.set(consulta, hallado);
+    return hallado;
+  };
+
+  // Devuelve { punto, distrito, encontrada, exacta, fallo }
+  const ubicar = async (direccion, elegido) => {
+    const salidaUbicar = { punto: null, distrito: elegido || distritoEnTexto(direccion), encontrada: "", exacta: false, fallo: false };
+    if (!direccion) return salidaUbicar;
+    const base = expandir(direccion);
+    const nombreDistrito = salidaUbicar.distrito && !distritoEnTexto(direccion) ? `, ${salidaUbicar.distrito}` : "";
+    const sinNumero = base.replace(/\s*(?:n[°º.]?\s*)?\d+[a-z]?(?=\s*(,|$))/gi, "");
+    const consultas = [`${base}${nombreDistrito}, Lima, Perú`];
+    if (sinNumero !== base) consultas.push(`${sinNumero}${nombreDistrito}, Lima, Perú`);
+    try {
+      for (const consulta of consultas) {
+        const hallado = await consultar(consulta);
+        if (!hallado) continue;
+        const partes = hallado.address || {};
+        const detectado = distritoEnTexto(partes.city || "") || distritoEnTexto(partes.suburb || "") || distritoEnTexto(partes.town || "");
+        // Si ya se sabe el distrito y el resultado cayó en otro, ese punto no sirve
+        if (salidaUbicar.distrito && detectado !== salidaUbicar.distrito) continue;
+        if (!detectado) {
+          salidaUbicar.fueraDe = partes.city || partes.suburb || partes.town || "otra zona";
+          continue;
+        }
+        salidaUbicar.distrito = detectado;
+        salidaUbicar.punto = [parseFloat(hallado.lat), parseFloat(hallado.lon)];
+        salidaUbicar.encontrada = hallado.display_name.split(",").slice(0, 3).join(",").trim();
+        salidaUbicar.exacta = hallado.addresstype === "building" || hallado.type === "house" || Boolean(partes.house_number);
+        return salidaUbicar;
+      }
+    } catch (error) {
+      salidaUbicar.fallo = true;
+    }
+    return salidaUbicar;
+  };
+
+  // ---------- Estimación ----------
+  const estimar = ({ operacion, tipo, distrito, area, dormitorios, punto }) => {
+    const modelo = DATOS.modelos[operacion];
+    const mercado = `${distrito} - ${tipo}`;
+    const filas = modelo.filasMercado[mercado] || 0;
+    const error = modelo.errores[tipo];
+    const codigoOp = operacion === "venta" ? 0 : 1;
+    const codigoTipo = tipo === "departamento" ? 0 : 1;
+    const delTipo = DATOS.avisos.filter((a) => a[0] === codigoOp && a[1] === codigoTipo);
+    let cercanos = [];
+    let radio = DATOS.radioKm;
+    if (punto) {
+      const conDistancia = delTipo.map((a) => ({ a, d: km(punto, [a[2], a[3]]) }));
+      cercanos = conDistancia.filter((x) => x.d <= radio);
+      if (cercanos.length < DATOS.minimoVecinos) {
+        radio = 1;
+        cercanos = conDistancia.filter((x) => x.d <= radio);
+      }
+    }
+    const resultado = { mercado, filas, error, cercanos, radio, ajuste: 0, delDistrito: delTipo.filter((a) => a[8] === distrito), insuficiente: filas < DATOS.minimoFilasMercado };
+    const referencia = modelo.referencia[mercado];
+    if (resultado.insuficiente || !referencia) {
+      resultado.insuficiente = true;
+      return resultado;
+    }
+    const conAjuste = operacion === "venta" && tipo === "departamento";
+    const dentroRadio = cercanos.filter((x) => x.d <= DATOS.radioKm);
+    if (conAjuste && dentroRadio.length >= DATOS.minimoVecinos) {
+      const media = dentroRadio.reduce((s, x) => s + x.a[7], 0) / dentroRadio.length;
+      resultado.ajuste = (dentroRadio.length / (dentroRadio.length + DATOS.pesoPrevio)) * media;
+    }
+    // La misma fórmula del simulador: referencia del mercado corregida por área y dormitorios.
+    // En venta, la referencia ya trae el descuento por negociación.
+    const descuento = operacion === "venta" && DATOS.descuentoNegociacion ? DATOS.descuentoNegociacion : 0;
+    const correccion = Math.pow(area / referencia.area, modelo.lnArea) * Math.exp(modelo.dormitorios * (dormitorios - referencia.dorm)) * Math.exp(resultado.ajuste);
+    const margen = referencia.n >= 30 ? 0 : referencia.n >= 15 ? 0.05 : 0.1;
+    resultado.central = referencia.unit * correccion * area;
+    resultado.unitPublicado = (referencia.unit * correccion) / (1 - descuento);
+    resultado.bajo = referencia.q1 * correccion * area * (1 - margen);
+    resultado.alto = referencia.q3 * correccion * area * (1 + margen);
+    const habitual = modelo.areaHabitual[mercado];
+    resultado.areaRara = habitual && (area < habitual[0] || area > habitual[1]);
+    return resultado;
+  };
+
+  // a[7] dice cuánto se aleja el aviso de lo que predice el modelo para su área y dormitorios.
+  // Se le resta el ajuste de la zona, para comparar contra la misma referencia del resultado.
+  const relativoDe = (a, r) => (r.unitPublicado ? Math.exp(a[7] - r.ajuste) - 1 : null);
+  const claseDePrecio = (a, r) => {
+    const relativo = relativoDe(a, r);
+    if (relativo === null) return "neutro";
+    return relativo < -MARGEN_PARECIDO ? "barato" : relativo > MARGEN_PARECIDO ? "caro" : "parecido";
+  };
+
+  const marcasDe = (r, punto) => {
+    const avisos = punto ? r.cercanos.map((x) => x.a) : r.delDistrito;
+    return avisos.map((a) => ({ lat: a[2], lon: a[3], precio: a[4], area: a[5], dormitorios: a[6], url: a[9], color: COLORES[claseDePrecio(a, r)] }));
+  };
+
+  // ---------- Resultado ----------
+  const elemento = (etiqueta, clase, texto) => {
+    const nodo = document.createElement(etiqueta);
+    if (clase) nodo.className = clase;
+    if (texto !== undefined) nodo.textContent = texto;
+    return nodo;
+  };
+  const conRetraso = (nodo, ms) => {
+    nodo.style.setProperty("--d", ms);
+    return nodo;
+  };
+  const capsula = (color, clases) => {
+    const envoltura = elemento("span", `vx-cap ${clases}`);
+    const imagen = elemento("img");
+    imagen.src = `./assets/vexta-capsula-${color}.svg`;
+    imagen.alt = "";
+    envoltura.append(imagen);
+    return envoltura;
+  };
+
+  // ---------- Paso al simulador ----------
+  const RUTA_SIMULADOR = "./simulador.html";
+  const enlaceSimulador = (opSimulador, entrada, r) => {
+    const consulta = new URLSearchParams({ op: opSimulador });
+    if (r) {
+      consulta.set("mercado", r.mercado);
+      consulta.set("area", String(entrada.area));
+      consulta.set("dorm", String(entrada.dormitorios));
+      // El precio y el ajuste por zona solo valen para la operación que se calculó; el precio va en dólares.
+      const misma = (opSimulador === "compra") === (entrada.operacion === "venta");
+      if (misma && r.unitPublicado) consulta.set("precio", String(redondear((r.unitPublicado * entrada.area) / DATOS.tipoCambio, entrada.operacion)));
+      if (misma && r.ajuste) consulta.set("zona", Math.exp(r.ajuste).toFixed(5));
+    }
+    return `${RUTA_SIMULADOR}?${consulta}`;
+  };
+  const crearBanda = () => {
+    const banda = elemento("section", "vx-simula");
+    const capsulaBanda = elemento("span", "vx-cap-simula");
+    const imagen = elemento("img");
+    imagen.src = "./assets/vexta-capsula-verde.svg";
+    imagen.alt = "";
+    capsulaBanda.append(imagen);
+    const titulo = elemento("h2", "", "Simula tu compra o alquiler, ");
+    titulo.append(elemento("em", "", "gratis"));
+    const botones = elemento("div", "vx-simula-botones");
+    [["compra", "Simular compra", ""], ["alquiler", "Simular alquiler", " vx-boton-claro"]].forEach(([op, texto, clase]) => {
+      const enlace = elemento("a", `vx-boton${clase}`, texto);
+      enlace.dataset.op = op;
+      enlace.href = enlaceSimulador(op);
+      botones.append(enlace);
+    });
+    banda.append(capsulaBanda, titulo, elemento("p", "", "Compara el precio que te piden con el mercado y llévate tu ficha de negociación."), botones);
+    return banda;
+  };
+
+  const pintar = (entrada, ubicacion, r) => {
+    const caja = $("resultado");
+    caja.replaceChildren();
+    caja.hidden = false;
+    const { operacion, tipo, area, dormitorios } = entrada;
+    const sufijo = operacion === "alquiler" ? " al mes" : "";
+    const etiquetaTipo = tipo === "departamento" ? "departamento" : "casa";
+    const enSoles = (v) => soles.format(redondear(v, operacion));
+
+    const escena = elemento("div", "vx-escena-vidrio");
+    escena.append(capsula("azul", "atras a1"), capsula("verde", "atras a2"));
+    const vidrio = elemento("div", "vx-vidrio");
+
+    if (r.insuficiente) {
+      vidrio.append(elemento("span", "vx-rotulo", `${ubicacion.distrito} · ${etiquetaTipo}`));
+      vidrio.append(conRetraso(elemento("p", "vx-aviso-vidrio vx-aparece", `Todavía hay pocos avisos en este mercado (${r.filas} en ${operacion}), así que preferimos no darte un número. Prueba con otro tipo de inmueble u operación.`), 350));
+      $("anuncio").textContent = `Pocos avisos en este mercado: ${r.filas}.`;
+    } else {
+      const hayDescuento = operacion === "venta" && DATOS.descuentoNegociacion;
+      vidrio.append(elemento("span", "vx-rotulo", operacion === "alquiler" ? "Alquiler aproximado" : hayDescuento ? "Valor aproximado de cierre" : "Precio de publicación aproximado"));
+
+      const valor = elemento("div", "vx-valor");
+      const numero = elemento("span");
+      valor.append(numero);
+      if (sufijo) valor.append(elemento("small", "", sufijo));
+      vidrio.append(valor);
+      contar(numero, 0, r.central, 1300, enSoles);
+
+      vidrio.append(conRetraso(elemento("div", "vx-dolares vx-aparece", `${dolares.format(redondear(r.central / DATOS.tipoCambio, operacion))}${sufijo} · ${soles.format(Math.round(r.central / area))}/m²`), 500));
+
+      // Medidor: el rango se abre desde el centro y la cápsula cae en su lugar
+      const medidor = elemento("div", "vx-medidor");
+      const pista = elemento("div", "vx-pista");
+      pista.append(elemento("div", "vx-relleno"));
+      const marcador = elemento("div", "vx-marcador");
+      medidor.append(pista, marcador);
+      vidrio.append(medidor);
+      const extremos = elemento("div", "vx-extremos");
+      const bajo = elemento("span");
+      const alto = elemento("span");
+      extremos.append(bajo, alto);
+      vidrio.append(extremos);
+      const posicion = ((r.central - r.bajo) / (r.alto - r.bajo)) * 100;
+      const abrir = () => {
+        medidor.classList.add("listo");
+        marcador.style.left = `${posicion}%`;
+        contar(bajo, r.central, r.bajo, 1000, enSoles);
+        contar(alto, r.central, r.alto, 1000, enSoles);
+      };
+      if (calma) abrir();
+      else {
+        bajo.textContent = alto.textContent = enSoles(r.central);
+        setTimeout(abrir, 420);
+      }
+
+      vidrio.append(conRetraso(elemento("p", "vx-nota vx-aparece", `Cerca de ${entero.format(r.error.cobertura * 10)} de cada 10 avisos parecidos${hayDescuento ? ", con el mismo descuento," : ""} caen dentro de este rango. Equivocación típica en ${tipo === "departamento" ? "departamentos" : "casas"}: ±${entero.format(r.error.errorTipico * 100)}%.`), 950));
+
+      const datos = elemento("div", "vx-datos");
+      const baja = r.filas < 20 || r.error.errorTipico > 0.25;
+      const media = !baja && r.error.errorTipico > 0.17;
+      const chips = [[baja ? "baja" : media ? "media" : "alta", baja ? "Precisión baja" : media ? "Precisión media" : "Precisión aceptable"], ["", `${r.filas} avisos en ${ubicacion.distrito}`]];
+      if (r.ajuste) chips.push(["", `Ajustado por la zona: ${r.ajuste > 0 ? "+" : ""}${entero.format((Math.exp(r.ajuste) - 1) * 100)}%`]);
+      chips.forEach(([clase, texto], i) => datos.append(conRetraso(elemento("span", clase, texto), 1050 + i * 120)));
+      vidrio.append(datos);
+
+      if (r.areaRara) vidrio.append(conRetraso(elemento("p", "vx-aviso-vidrio vx-aparece", `${area} m² es poco común en este mercado: toma este valor con más cuidado.`), 1300));
+      if (hayDescuento) vidrio.append(conRetraso(elemento("p", "vx-nota vx-aparece", `Ya descuenta ${entero.format(DATOS.descuentoNegociacion * 100)}% de negociación sobre un precio de publicación de ${enSoles(r.central / (1 - DATOS.descuentoNegociacion))}.`), 1350));
+      else if (operacion === "venta") vidrio.append(conRetraso(elemento("p", "vx-nota vx-aparece", "Es el precio al que se publicaría. Todavía no descuenta lo que se suele negociar."), 1350));
+      $("anuncio").textContent = `Aproximado: ${enSoles(r.central)}${sufijo}. Rango: de ${enSoles(r.bajo)} a ${enSoles(r.alto)}.`;
+    }
+
+    if (ubicacion.punto) {
+      vidrio.append(conRetraso(elemento("p", "vx-nota vx-aparece", `Ubicación usada: ${ubicacion.encontrada}${ubicacion.exacta ? "" : " (se ubicó la calle, no el número exacto)"}.`), 1450));
+    } else if (entrada.direccion) {
+      vidrio.append(conRetraso(elemento("p", "vx-aviso-vidrio vx-aparece", `No encontré esa dirección en ${ubicacion.distrito}. Usé el promedio del distrito, sin avisos cercanos.`), 1450));
+    }
+    escena.append(vidrio, capsula("verde", "delante d1"), capsula("azul", "delante d2"));
+    caja.append(escena);
+
+    const panel = conRetraso(elemento("div", "vx-panel"), 1300);
+    const distanciaTexto = r.radio >= 1 ? "1 km" : "500 m";
+    if (ubicacion.punto && DATOS.modo === "cliente") {
+      panel.append(elemento("span", "vx-rotulo", r.cercanos.length ? `${r.cercanos.length} avisos a menos de ${distanciaTexto}` : "Avisos cercanos"));
+      if (!r.cercanos.length) {
+        panel.append(elemento("p", "vx-nota", "No hay avisos de este tipo a menos de 1 km en nuestra muestra."));
+      } else if (r.unitPublicado) {
+        const cuenta = { barato: 0, parecido: 0, caro: 0 };
+        r.cercanos.forEach(({ a }) => (cuenta[claseDePrecio(a, r)] += 1));
+        const resumen = elemento("div", "vx-resumen");
+        [["barato", "más baratos"], ["parecido", "parecidos"], ["caro", "más caros"]].forEach(([clase, texto]) => {
+          const dato = elemento("span");
+          dato.append(elemento("i", `vx-punto-color c-${clase}`), `${cuenta[clase]} ${texto}`);
+          resumen.append(dato);
+        });
+        panel.append(resumen);
+        panel.append(elemento("p", "vx-nota", "Comparados con lo esperado para su área, dormitorios y zona."));
+      }
+    } else if (ubicacion.punto) {
+      const parecidos = r.cercanos
+        .slice()
+        .sort((x, y) => Math.abs(Math.log(x.a[5] / area)) + x.d / 2 - (Math.abs(Math.log(y.a[5] / area)) + y.d / 2))
+        .slice(0, 5);
+      const distancia = r.radio >= 1 ? "1 km" : "500 m";
+      panel.append(elemento("span", "vx-rotulo", parecidos.length ? `${r.cercanos.length} avisos a menos de ${distancia}` : "Avisos cercanos"));
+      if (!parecidos.length) {
+        panel.append(elemento("p", "vx-nota", "No hay avisos de este tipo a menos de 1 km en nuestra muestra."));
+      } else {
+        const lista = elemento("ul", "vx-cercanos");
+        parecidos.forEach(({ a, d }, i) => {
+          const fila = conRetraso(elemento("li"), 1450 + i * 110);
+          const clase = claseDePrecio(a, r);
+          fila.append(elemento("i", `vx-punto-color c-${clase === "neutro" ? "parecido" : clase}`));
+          fila.append(elemento("b", "", `${soles.format(a[4])}${sufijo}`));
+          const enlace = elemento("a");
+          enlace.href = a[9];
+          enlace.target = "_blank";
+          enlace.rel = "noopener nofollow";
+          if (r.unitPublicado) {
+            const relativo = relativoDe(a, r) * 100;
+            const etiquetaRelativa = elemento("span", `vx-relativo ${clase}`, `${relativo > 0 ? "+" : ""}${entero.format(relativo)}%`);
+            etiquetaRelativa.append(elemento("span", "vx-largo", " vs. lo esperado"));
+            enlace.append(etiquetaRelativa);
+          }
+          enlace.append(elemento("span", "vx-ver", "Ver aviso"));
+          fila.append(enlace);
+          fila.append(elemento("small", "", `${a[5]} m² · ${a[6]} dorm. · ${soles.format(Math.round(a[4] / a[5]))}/m² · a ${Math.round((d * 1000) / 10) * 10} m`));
+          fila.addEventListener("pointerenter", () => Mapa.resaltar(a[9]));
+          fila.addEventListener("pointerleave", () => Mapa.resaltar(null));
+          enlace.addEventListener("focus", () => Mapa.resaltar(a[9]));
+          enlace.addEventListener("blur", () => Mapa.resaltar(null));
+          lista.append(fila);
+        });
+        panel.append(lista);
+        if (r.unitPublicado) panel.append(elemento("p", "vx-nota", "El porcentaje compara cada aviso con lo esperado para su área, dormitorios y zona."));
+      }
+    }
+    panel.append(elemento("p", "vx-nota", `Avisos revisados el ${DATOS.fecha.split("-").reverse().join("/")}. Consultaste: ${area} m², ${dormitorios} dorm.`));
+    if (DATOS.modo === "cliente") {
+      // Abre el simulador con estos datos; el precio va en dólares, como lo espera el simulador.
+      const irSimulador = elemento("a", "vx-boton", "Simular y sacar mi ficha");
+      irSimulador.href = enlaceSimulador(operacion === "venta" ? "compra" : "alquiler", entrada, r);
+      panel.append(irSimulador);
+      // Los botones del sector también llevan lo que la persona ya escribió
+      document.querySelectorAll("a[data-op]").forEach((enlace) => (enlace.href = enlaceSimulador(enlace.dataset.op, entrada, r)));
+    }
+    caja.append(panel);
+  };
+
+  const fijarBoton = (cargando, texto) => {
+    $("calcular").disabled = cargando;
+    $("calcular").classList.toggle("cargando", cargando);
+    $("texto-boton").textContent = texto;
+  };
+
+  const calcular = async (evento) => {
+    evento.preventDefault();
+    mostrarMensaje("");
+    const entrada = {
+      direccion: $("direccion").value.trim(),
+      operacion: document.querySelector('input[name="operacion"]:checked').value,
+      tipo: document.querySelector('input[name="tipo"]:checked').value,
+      area: Number($("area").value),
+      dormitorios: Number($("dormitorios").value),
+    };
+    const elegido = $("distrito").value;
+    if (!entrada.direccion && !elegido) return mostrarMensaje("Escribe una dirección o elige un distrito.");
+    if (!(entrada.area >= 10 && entrada.area <= 1000)) return mostrarMensaje("El área debe estar entre 10 y 1.000 m².");
+    if (!(Number.isInteger(entrada.dormitorios) && entrada.dormitorios >= 1 && entrada.dormitorios <= 10)) return mostrarMensaje("Los dormitorios deben ser un número entre 1 y 10.");
+
+    const miTurno = ++turno;
+    fijarBoton(true, "Buscando la dirección…");
+    $("resultado").hidden = true;
+    $("leyenda").hidden = true;
+    $("rotulo-mapa").textContent = "Buscando en el mapa…";
+    Mapa.buscar(true);
+    if (window.innerWidth < 920) $("escenario").scrollIntoView({ behavior: calma ? "auto" : "smooth", block: "start" });
+
+    let ubicacion;
+    try {
+      ubicacion = await ubicar(entrada.direccion, elegido);
+    } finally {
+      fijarBoton(false, "Calcular valor aproximado");
+      Mapa.buscar(false);
+    }
+    if (miTurno !== turno) return undefined;
+
+    if (!ubicacion.distrito) {
+      $("rotulo-mapa").textContent = "Cada punto es un aviso real";
+      const zona = ubicacion.fueraDe ? `La ubiqué en ${ubicacion.fueraDe}, fuera de los 15 distritos que cubrimos. ` : "No pude ubicar esa dirección. ";
+      return mostrarMensaje(`${zona}Si es correcta, elige el distrito en la lista.`);
+    }
+    if (!elegido) {
+      $("distrito").value = ubicacion.distrito;
+      $("distrito").dataset.detectado = "1";
+    }
+    if (ubicacion.fallo) mostrarMensaje("El buscador de direcciones no respondió. Calculé con el promedio del distrito.");
+
+    const r = estimar({ ...entrada, distrito: ubicacion.distrito, punto: ubicacion.punto });
+    const lugar = ubicacion.punto ? { lat: ubicacion.punto[0], lon: ubicacion.punto[1] } : Mapa.centro(ubicacion.distrito);
+    Mapa.enfocar({ ...lugar, radio: ubicacion.punto ? r.radio : 1.6, exacto: Boolean(ubicacion.punto), marcas: marcasDe(r, ubicacion.punto) });
+    $("rotulo-mapa").textContent = ubicacion.punto ? ubicacion.encontrada : `Promedio de ${ubicacion.distrito}`;
+    $("leyenda").hidden = !r.unitPublicado;
+    // La tarjeta sube cuando la cámara ya está llegando a la dirección
+    setTimeout(() => {
+      if (miTurno === turno) pintar(entrada, ubicacion, r);
+    }, calma ? 0 : 1000);
+    return undefined;
+  };
+
+  // Al escribir otra dirección, el distrito vuelve a detectarse solo.
+  $("direccion").addEventListener("input", () => {
+    const lista = $("distrito");
+    if (lista.dataset.detectado === "1") {
+      lista.value = "";
+      delete lista.dataset.detectado;
+    }
+  });
+  // Si la persona elige un distrito a mano, ese manda.
+  $("distrito").addEventListener("change", () => delete $("distrito").dataset.detectado);
+
+  // ---------- Parallax: movimientos pequeños según el puntero y el desplazamiento ----------
+  const iniciarParallax = () => {
+    if (calma) return;
+    const fondo = $("fondo");
+    let px = 0;
+    let py = 0;
+    let suaveX = 0;
+    let suaveY = 0;
+    window.addEventListener("pointermove", (ev) => {
+      px = (ev.clientX / window.innerWidth - 0.5) * 72;
+      py = (ev.clientY / window.innerHeight - 0.5) * 72;
+    }, { passive: true });
+    const paso = () => {
+      suaveX += (px - suaveX) * 0.05;
+      suaveY += (py - window.scrollY * 0.14 - suaveY) * 0.05;
+      fondo.style.setProperty("--mx", (-suaveX).toFixed(2));
+      fondo.style.setProperty("--my", (-suaveY).toFixed(2));
+      requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  };
+
+  const sincronizarFiltro = () => {
+    const op = document.querySelector('input[name="operacion"]:checked').value === "venta" ? 0 : 1;
+    const ti = document.querySelector('input[name="tipo"]:checked').value === "departamento" ? 0 : 1;
+    Mapa.filtrar(op, ti);
+  };
+
+  fetch("./valor-datos.json")
+    .then((r) => r.json())
+    .then((datos) => {
+      DATOS = datos;
+      if (DATOS.modo === "cliente") {
+        $("volver").textContent = "Simular gratis →";
+        $("volver").href = RUTA_SIMULADOR;
+        $("banda-movil").append(crearBanda());
+        $("banda-escritorio").append(crearBanda());
+      }
+      const lista = $("distrito");
+      DATOS.distritos
+        .map((d) => d.nombre)
+        .sort((a, b) => a.localeCompare(b, "es"))
+        .forEach((nombre) => lista.append(Object.assign(document.createElement("option"), { value: nombre, textContent: nombre })));
+      Mapa = crearMapa($("mapa"), DATOS);
+      sincronizarFiltro();
+      document.querySelectorAll('input[name="operacion"], input[name="tipo"]').forEach((i) => i.addEventListener("change", sincronizarFiltro));
+      $("formulario").addEventListener("submit", calcular);
+      const mercados = new Set([...Object.keys(DATOS.modelos.venta.referencia), ...Object.keys(DATOS.modelos.alquiler.referencia)]).size;
+      const formato = (v) => entero.format(Math.round(v));
+      contar($("cifra-avisos"), 0, DATOS.avisos.length, 1500, formato);
+      contar($("cifra-distritos"), 0, DATOS.distritos.length, 1100, formato);
+      contar($("cifra-mercados"), 0, mercados, 1300, formato);
+      iniciarParallax();
+    })
+    .catch(() => mostrarMensaje("No se pudieron cargar los datos. Recarga la página.", "error"));
+
+})();
+</script>
+</body>
 </html>
