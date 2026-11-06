@@ -935,16 +935,16 @@
     const panel = conRetraso(elemento("div", "vx-panel"), 1300);
     const distanciaTexto = r.radio >= 1 ? "1 km" : "500 m";
     if (ubicacion.punto && DATOS.modo === "cliente") {
-      panel.append(elemento("span", "vx-rotulo", r.cercanos.length ? `${r.cercanos.length} avisos a menos de ${distanciaTexto}` : "Avisos cercanos"));
+      panel.append(elemento("span", "vx-rotulo", r.cercanos.length ? `${r.cercanos.length} ${r.cercanos.length === 1 ? "aviso" : "avisos"} a menos de ${distanciaTexto}` : "Avisos cercanos"));
       if (!r.cercanos.length) {
         panel.append(elemento("p", "vx-nota", "No hay avisos de este tipo a menos de 1 km en nuestra muestra."));
       } else if (r.unitPublicado) {
         const cuenta = { barato: 0, parecido: 0, caro: 0 };
         r.cercanos.forEach(({ a }) => (cuenta[claseDePrecio(a, r)] += 1));
         const resumen = elemento("div", "vx-resumen");
-        [["barato", "más baratos"], ["parecido", "parecidos"], ["caro", "más caros"]].forEach(([clase, texto]) => {
+        [["barato", "más barato", "más baratos"], ["parecido", "parecido", "parecidos"], ["caro", "más caro", "más caros"]].forEach(([clase, uno, varios]) => {
           const dato = elemento("span");
-          dato.append(elemento("i", `vx-punto-color c-${clase}`), `${cuenta[clase]} ${texto}`);
+          dato.append(elemento("i", `vx-punto-color c-${clase}`), `${cuenta[clase]} ${cuenta[clase] === 1 ? uno : varios}`);
           resumen.append(dato);
         });
         panel.append(resumen);
@@ -956,7 +956,7 @@
         .sort((x, y) => Math.abs(Math.log(x.a[5] / area)) + x.d / 2 - (Math.abs(Math.log(y.a[5] / area)) + y.d / 2))
         .slice(0, 5);
       const distancia = r.radio >= 1 ? "1 km" : "500 m";
-      panel.append(elemento("span", "vx-rotulo", parecidos.length ? `${r.cercanos.length} avisos a menos de ${distancia}` : "Avisos cercanos"));
+      panel.append(elemento("span", "vx-rotulo", parecidos.length ? `${r.cercanos.length} ${r.cercanos.length === 1 ? "aviso" : "avisos"} a menos de ${distancia}` : "Avisos cercanos"));
       if (!parecidos.length) {
         panel.append(elemento("p", "vx-nota", "No hay avisos de este tipo a menos de 1 km en nuestra muestra."));
       } else {
